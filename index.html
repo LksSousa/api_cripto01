@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CoinMarketCap</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    </head>
+    <body>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Coin Market Cap</li>
+            </ol>
+          </nav>
+        
+          <div class="d-flex p-3 bd-highlight">
+            <div id='coins'></div>
+          </div>
+
+        <script type="text/javascript">
+            //My api key
+            var apikey = {
+                key: 'b1f882ac-c206-4f87-849c-bc0cfb945daa'
+            }
+
+            //GET Fetch Requisition
+            fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY=' + apikey.key)
+            .then((response) => {
+                if (!response.ok) throw new Error('Erro ao executar a requisicao, status ' + response.status);
+                return response.json();
+            })
+            .then((api) => {
+                //console.log(api);
+                //Get 10 coins and symbols
+                var texto = "";
+                for(let i = 0; i < 10; i++){
+
+                    //Show API informaion
+
+                    texto = texto + `
+                    <div class="media">
+                        <spam class="fas fa-coins align-self-center mr-3"></spam>
+                        <div class="media-body">
+                            <h5 class="mt-2">${api.data[i].name}</h5>
+                            <p>${api.data[i].symbol} - ${api.data[i].first_historical_data}</p>
+                        </div>
+                    </div>
+                    `; 
+                }    
+                document.getElementById("coins").innerHTML = texto;
+            })
+            .catch((error) => {
+                console.error(error.message);
+            });
+        </script>
+        <script src="https://kit.fontawesome.com/8fdac25625.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+    
+</html>
